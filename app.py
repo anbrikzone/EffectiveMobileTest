@@ -2,6 +2,16 @@ import os
 from database import Database
 from service import Validate, Menu
 
+"""
+Class App is implemented main methods of program.
+Methods:
+    :run               - run application with menu
+    :show_balance      - show balance (incomes and expenses)
+    :add_record        - add record to database
+    :change_record     - change record in database
+    :search_record     - search record in database 
+"""
+
 
 class App:
 
@@ -10,9 +20,10 @@ class App:
         self.check = Validate()
         self.menu = Menu()
 
-    def run(self):
+    def run(self) -> None:
         while True:
-            self.header()
+            self.menu.clear()
+            self.menu.header()
             try:
                 menu_item = int(input('Please select menu item [number]: '))
             except ValueError:
@@ -27,82 +38,73 @@ class App:
                 case 4:
                     self.search()
 
-    @staticmethod
-    def header():
-        print("[1]: Show balance \n" +
-              "[2]: Add new record \n" +
-              "[3]: Change record \n" +
-              "[4]: Search")
-
-    def show_balance(self):
+    def show_balance(self) -> str:
         income = 0
         expenses = 0
 
         all_records = self.db.read()
         for i, row in enumerate(all_records):
             if row.startswith('category'):
-                amount = float(all_records[i + 1].split(":")[1].strip())
-                if row.split(":")[1].strip() == "income":
+                # Get amount of money for category
+                amount = float(self.menu.field_value(all_records[i + 1]))
+                if self.menu.field_value(row) == "income":
                     income += amount
                 else:
                     expenses += amount
 
-        print(f"Balance:    {round(income - expenses, 1)}\n" +
-              f"Income:     {income}\n" +
-              f"Expenses:   {expenses}")
-        input()
-        return True
+        print(f"Balance:    {round(income - expenses, 2)}\n" +
+              f"Income:     {round(income, 2)}\n" +
+              f"Expenses:   {round(expenses, 2)}")
+        return self.menu.press_enter()
 
-    def add_record(self):
+    def add_record(self) -> str:
+        # Obtain user's input and validate them
         record = {
             'date': self.menu.set_input(
                 message="Add date [dd.mm.yyyy]: ",
                 note="The date is incorrect. Please follow suggested template - dd.mm.yyyy",
                 validation_rule="is_valid_date"
-            ), "category": self.menu.set_input(
+            ),
+            "category": self.menu.set_input(
                 message="Choose category - [1] for income and [2] for expenses: ",
                 note="The category is incorrect. Please choose suggested type - [1] for income and [2] for expenses:",
                 validation_rule="is_valid_category"
-            ), "amount": self.menu.set_input(
+            ),
+            "amount": self.menu.set_input(
                 message="Input amount of money [0 or .0]: ",
                 note="The amount is incorrect. Please choose suggested type - 0 or .0:",
                 validation_rule="is_valid_amount"
-            ), "description": self.menu.set_input(
+            ),
+            "description": self.menu.set_input(
                 message="Input description (max 256 symbols): ",
                 note="The description is too long. 256 symbols are maximum.",
                 validation_rule="is_valid_description"
             )}
-
+        # Convert numbers to text for categories
         record['category'] = "income" if record['category'] == "1" else "expenses"
 
         if self.db.create(record):
             print('The record has been added.')
-            return True
         else:
-            return False
+            print('The record has not been created.')
+        return self.menu.press_enter()
 
     def change_record(self):
-        print(
-            "You are going to change record. Please type date, category, amount or description to identify the record.")
-        search_text = input('Search: ')
+        search_text = self.menu.set_input(
+            message="You are going to change record. Please type date, category, amount or description to identify "
+                    "the record.\n"
+                    "Search: ",
+            note="Please fill out search field.",
+            validation_rule="is_search_field_empty"
+        )
         results = self.menu.search_records(search_text, self.db.read())
 
-        # if len(results.items()) > 1:
-        #     for i, record in results.items():
-        #         print(f'{i}) ', record)
-        #     position = int(input("Choose position of records for changing: "))
-        # else:
-        #     position = next(iter(results))
-
-        # for i, row in enumerate(results[position]):
-        #     print(f'{i}) ', row)
-
-        # p = int(input("Choose position for changing [0, 1, 2 or 3]: "))
-        # old_value = results[position][p].split(':')[1].strip()
-        old_value = self.menu.loop_search(results)
+        row_number, field_number = self.menu.loop_search(results)
+        old_value = self.menu.field_value(results[row_number][field_number])
+        new_value = ""
         message = f"Old value - {old_value}, New value: "
 
-        match p:
+        match field_number:
             case 0:
                 new_value = self.menu.set_input(
                     message=message,
@@ -129,10 +131,23 @@ class App:
                     validation_rule="is_valid_description"
                 )
 
-        results[position][p] = results[position][p].replace(old_value, new_value)
-        # print(position)
-        self.db.update(position=position + p, data=results[position][p])
-        # print(p)
+        results[row_number] = results[row_number][field_number].replace(old_value, new_value)
+        if self.db.update(position=(row_number + field_number), data=results[row_number]):
+            print('Data has been updated.')
+        else:
+            print('Data not updated.')
+        return self.menu.press_enter()
 
-    def remove_record(self):
-        pass
+    def search(self):
+        search_text = self.menu.set_input(
+            message="Search: ",
+            note="Please fill out search field.",
+            validation_rule="is_search_field_empty"
+        )
+        results = self.menu.search_records(search_text, self.db.read())
+        if len(results) > 1:
+            for i, record in results.items():
+                print(f'{i}) ', record)
+        else:
+            print(f'There is no records with search text "{search_text}".')
+        self.menu.press_enter()
