@@ -21,6 +21,9 @@ class Database:
         self.connect()
 
     def connect(self) -> bool:
+        """
+        :return: True if database exists, else False
+        """
         db = Path(self.db_path)
         if not db.is_file():
             try:
@@ -30,6 +33,10 @@ class Database:
         return True
 
     def read(self, mode: str = 'read') -> list:
+        """
+        :param mode: read or write: read - without \n, write - all characters
+        :return: list of rows from database file
+        """
         with open(self.db_path, 'r', encoding='utf-8') as file:
             if mode == 'read':
                 return [x.strip() for x in file.readlines()]
@@ -39,6 +46,11 @@ class Database:
                 return [x.strip() for x in file.readlines()]
 
     def update(self, position: int, data: str) -> bool:
+        """
+        :param position: row number to update
+        :param data: string to update
+        :return: True if data was updated, else False
+        """
         records = self.read(mode='write')
         records[position] = data + '\n'
         try:
@@ -49,6 +61,10 @@ class Database:
             return False
 
     def create(self, data: dict) -> bool:
+        """
+        :param data: Dictionary to create
+        :return: True if data was created, else False
+        """
         with open(self.db_path, 'a', encoding='utf-8') as file:
             file.writelines([f'{key}: {value}\n' for key, value in data.items()])
             file.write('\n')
