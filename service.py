@@ -56,8 +56,8 @@ class Menu:
     @staticmethod
     def search_records(search_query: str, data: list) -> dict:
         """
-        :param search_query:
-        :param data:
+        :param search_query: text which we want to find in database
+        :param data: all records from database
         :return:
         """
         search_results = {}
