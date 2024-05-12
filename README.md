@@ -31,16 +31,17 @@ python -m main
 ```
 
 ### Скриншоты
-![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/ad42622a-650d-4c0c-b0ee-58627b3bcac5)
 + Основное меню
-   
-![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/9d9610a8-36ac-4351-91b9-b716749e154d)
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/ad42622a-650d-4c0c-b0ee-58627b3bcac5)
+
 + Добавление записи
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/9d9610a8-36ac-4351-91b9-b716749e154d)
 
-![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/568f4639-2812-47db-8b4d-bedd11d0a239)
 + Редактирование
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/568f4639-2812-47db-8b4d-bedd11d0a239)
 
-![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/57ca4110-29f2-48f7-8b13-26f8ce375aa8)
 + Поиск
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/57ca4110-29f2-48f7-8b13-26f8ce375aa8)
+
 
 
