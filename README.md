@@ -1,5 +1,5 @@
 ## Консольное приложение "Личный финансовый кошелек"
-### (тестовое задание для Effectiva Mobile)
+### (тестовое задание для Effective Mobile)
 
 
 ### Описание
@@ -29,10 +29,23 @@ git clone https://github.com/anbrikzone/EffectiveMobileTest.git
 ```commandline
 python -m main
 ```
+
 ### Скриншоты
-1. Основное меню
-2. Добавление записи
-3. Редактирование
-4. Поиск
++ Основное меню
+  
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/ad42622a-650d-4c0c-b0ee-58627b3bcac5)
+
++ Добавление записи
+  
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/9d9610a8-36ac-4351-91b9-b716749e154d)
+
++ Редактирование
+  
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/568f4639-2812-47db-8b4d-bedd11d0a239)
+
++ Поиск
+  
+![image](https://github.com/anbrikzone/EffectiveMobileTest/assets/2174324/57ca4110-29f2-48f7-8b13-26f8ce375aa8)
+
 
 
